@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Grupo SS</string>
+
+    <string name="latitude_label">Latitude: %f</string>
+    <string name="longitude_label">Longitude: %f</string>
+    <string name="no_location_detected">
+        No location detected. Make sure location is enabled on the device.
+    </string>
+
+    <string-array name="status">
+        <item>Seleccione</item>
+        <item>Culminado</item>
+        <item>Rechazado</item>
+    </string-array>
+</resources>

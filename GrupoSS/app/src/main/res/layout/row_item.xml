@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?><androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tviUnique"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        tools:text="ID: 5"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.037"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.100000024" />
+
+    <TextView
+        android:id="@+id/tviOrder"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tviUnique"
+        app:layout_constraintTop_toBottomOf="@+id/tviUnique"
+        tools:text="Num. Orden: 19/00001560" />
+
+    <TextView
+        android:id="@+id/tviHour"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.993"
+        app:layout_constraintStart_toEndOf="@+id/tviOrder"
+        app:layout_constraintTop_toTopOf="@+id/tviOrder"
+        tools:text="Entrega: 11:00" />
+
+    <TextView
+        android:id="@+id/tviService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tviOrder"
+        app:layout_constraintTop_toBottomOf="@+id/tviOrder"
+        tools:text="Servicio: Transporte" />
+
+    <TextView
+        android:id="@+id/tviAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tviService"
+        app:layout_constraintTop_toBottomOf="@+id/tviService"
+        tools:text="Cliente: IMPORTACIONES REAL AUTOMOTRIZ SA" />
+</androidx.constraintlayout.widget.ConstraintLayout>
