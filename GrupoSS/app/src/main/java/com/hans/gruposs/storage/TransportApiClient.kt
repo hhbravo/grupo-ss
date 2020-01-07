@@ -1,14 +1,12 @@
 package com.hans.gruposs.storage
 
 import com.hans.gruposs.model.Transport
-import com.hans.gruposs.model.TransportEntity
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
-import java.util.concurrent.TimeUnit
 
 
 object TransportApiClient {
@@ -49,6 +47,11 @@ object TransportApiClient {
 
         @GET("listado/{iduser}")
         fun transports(@Path("iduser") iduser: String?): Call<Transport>
+        @POST("culminar/{status}/{iduser}/{latitude}/{longitude}/{observation}")
+        fun updateTransport(@Path("iduser") iduser:String?, @Path("status") status:String?,
+                            @Path("observation") observation:String?,
+                            @Path("latitude") latitude:String?,
+                            @Path("longitude") longitude:String?):Call<String>
 
         /*
          //Backendless

@@ -17,8 +17,15 @@ import android.widget.*
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 import com.hans.gruposs.R
+import com.hans.gruposs.model.Transport
 import com.hans.gruposs.model.TransportEntity
+import com.hans.gruposs.storage.TransportApiClient
+import com.hans.gruposs.storage.TransportRepository
 import kotlinx.android.synthetic.main.activity_edit_transport.*
+import kotlinx.android.synthetic.main.layout_loading.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class EditTransportActivity : AppCompatActivity() {
 
@@ -26,8 +33,15 @@ class EditTransportActivity : AppCompatActivity() {
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private lateinit var latitude: String
     private lateinit var longitude: String
-    private lateinit var spinner:Spinner
-    private lateinit var transport:TransportEntity
+    private lateinit var spinner: Spinner
+    private lateinit var transport: TransportEntity
+    private lateinit var transportRepository: TransportRepository
+    private var call: Call<String>? = null
+
+
+    private var status: String? = null
+    private var observation: String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,24 +49,102 @@ class EditTransportActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         verifyExtras()
+        setupRepository()
+        populate()
+
+        ui()
         getLastLocation()
         this.spinner = spStatus
+        //culminado 3
+        //rechazado 4
+        val statusList = arrayOf("Seleccione", "Culminado", "Rechazado")
 
-        val adapter = ArrayAdapter.createFromResource(this, R.array.status, R.layout.support_simple_spinner_dropdown_item)
-        spinner.adapter =adapter
-        spinner.onItemSelectedListener = object:AdapterView.OnItemSelectedListener{
+        val adapter = ArrayAdapter(
+            this,
+            R.layout.support_simple_spinner_dropdown_item,
+            statusList
+        )
+
+        spinner.adapter = adapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
-                Log.d("CONSOLE", id.toString())
+                status = statusList.get(position)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
+    }
+
+    private fun ui() {
+        btnEditTransport.setOnClickListener {
+            if (validateForm()) {
+                editNote()
+            } else {
+                showErrorMessage("Ingrese el estado correctamente")
+            }
+        }
+
+    }
+
+
+    private fun editNote() {
+        showLoading()
+        observation = etviObservation.text.toString()
+        call = TransportApiClient.build()
+            ?.updateTransport(transport.id, getStatusCode(), observation, latitude, longitude)
+
+        call?.enqueue(object : Callback<String> {
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                hideLoading()
+                showErrorMessage(t.message)
+            }
+
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                hideLoading()
+                response?.body()?.let {
+                    if (response.isSuccessful) {
+                        finish()
+                    } else {
+                        showErrorMessage(response.errorBody()?.string())
+                    }
+                }
+            }
+        })
+
+    }
+
+    private fun getStatusCode() :String {
+        when(status) {
+            "Culminado" -> return "3"
+            else -> return "4"
+        }
+    }
+
+    private fun validateForm(): Boolean {
+
+        if (status.isNullOrEmpty()) {
+            return false
+        }
+        when (status) {
+            "Seleccione" -> return false
+            else -> return true
+        }
+    }
+
+    private fun populate() {
+        transport?.let {
+            etvId.setText(it?.id)
+            etvClient.setText(it?.cliente)
+            etvService.setText(it?.tipo_servicio)
+            etvOrden.setText(it?.nro_orden)
+        }
+    }
+
+    private fun setupRepository() {
+        transportRepository = TransportRepository()
     }
 
     @SuppressLint("MissingPermission")
@@ -112,7 +204,8 @@ class EditTransportActivity : AppCompatActivity() {
 
     private fun checkPermissions(): Boolean {
         if (ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                this, Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
             ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -147,14 +240,27 @@ class EditTransportActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun showErrorMessage(error: String?) {
+        Toast.makeText(this, "Error : $error", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showLoading() {
+        flayLoading.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        flayLoading.visibility = View.GONE
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
 
-    private fun verifyExtras(){
+    private fun verifyExtras() {
         intent?.extras?.let {
-            transport= it.getSerializable("TRANSPORTE") as TransportEntity
+            transport = it.getSerializable("TRANSPORTE") as TransportEntity
         }
     }
 }
