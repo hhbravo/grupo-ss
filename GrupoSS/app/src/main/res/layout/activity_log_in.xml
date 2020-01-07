@@ -26,7 +26,6 @@
             android:ems="10"
             android:id="@+id/eteUsername"
             android:hint="usuario"
-            android:text="mensaje1"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="169dp" />
@@ -36,7 +35,6 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="Password"
-            android:text="123456"
             android:ems="10"
             android:id="@+id/etePassword"
             android:imeOptions="actionDone"

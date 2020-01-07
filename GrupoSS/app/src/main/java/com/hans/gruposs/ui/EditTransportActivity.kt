@@ -17,6 +17,7 @@ import android.widget.*
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 import com.hans.gruposs.R
+import com.hans.gruposs.common.PreferencesHelper
 import com.hans.gruposs.model.Transport
 import com.hans.gruposs.model.TransportEntity
 import com.hans.gruposs.storage.TransportApiClient
@@ -93,8 +94,9 @@ class EditTransportActivity : AppCompatActivity() {
     private fun editNote() {
         showLoading()
         observation = etviObservation.text.toString()
+        val user = PreferencesHelper.userSession(this)
         call = TransportApiClient.build()
-            ?.updateTransport(transport.id, getStatusCode(), observation, latitude, longitude)
+            ?.updateTransport(user, getStatusCode(), observation, latitude, longitude, transport.id)
 
         call?.enqueue(object : Callback<String> {
             override fun onFailure(call: Call<String>, t: Throwable) {
@@ -116,8 +118,8 @@ class EditTransportActivity : AppCompatActivity() {
 
     }
 
-    private fun getStatusCode() :String {
-        when(status) {
+    private fun getStatusCode(): String {
+        when (status) {
             "Culminado" -> return "3"
             else -> return "4"
         }
@@ -136,10 +138,10 @@ class EditTransportActivity : AppCompatActivity() {
 
     private fun populate() {
         transport?.let {
-            etvId.setText(it?.id)
-            etvClient.setText(it?.cliente)
-            etvService.setText(it?.tipo_servicio)
-            etvOrden.setText(it?.nro_orden)
+            etvId.setText("ID: ".plus(it?.id))
+            etvClient.setText("Cliente: ".plus(it?.cliente))
+            etvService.setText("Servicio: ".plus(it?.tipo_servicio))
+            etvOrden.setText("Num. Orden: ".plus(it?.nro_orden))
         }
     }
 

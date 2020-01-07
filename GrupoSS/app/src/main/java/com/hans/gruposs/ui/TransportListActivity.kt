@@ -70,7 +70,6 @@ class TransportListActivity : AppCompatActivity() {
     }
 
     private fun loadTransport() {
-        val map: MutableMap<String, String> = mutableMapOf<String, String>()
         val userId = PreferencesHelper.userSession(this)
         showLoading()
         call = TransportApiClient.build()?.transports(userId)

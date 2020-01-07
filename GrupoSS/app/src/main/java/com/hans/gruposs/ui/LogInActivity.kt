@@ -42,7 +42,7 @@ class LogInActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call<List<LogInResponse>>, response: Response<List<LogInResponse>>) {
                 hideLoading()
-                response?.body()?.let {
+                response.body()?.let {
                     if(response.isSuccessful){
                         saveSession(it.get(0))
                         goToNoteList()

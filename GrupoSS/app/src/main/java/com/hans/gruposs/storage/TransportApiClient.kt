@@ -47,11 +47,12 @@ object TransportApiClient {
 
         @GET("listado/{iduser}")
         fun transports(@Path("iduser") iduser: String?): Call<Transport>
-        @POST("culminar/{status}/{iduser}/{latitude}/{longitude}/{observation}")
+        @POST("culminar/{idorden}/{status}/{iduser}/{latitude}/{longitude}/{observation}")
         fun updateTransport(@Path("iduser") iduser:String?, @Path("status") status:String?,
                             @Path("observation") observation:String?,
                             @Path("latitude") latitude:String?,
-                            @Path("longitude") longitude:String?):Call<String>
+                            @Path("longitude") longitude:String?,
+                            @Path("idorden") idorden:String?):Call<String>
 
         /*
          //Backendless
