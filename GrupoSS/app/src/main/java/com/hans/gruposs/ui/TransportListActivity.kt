@@ -3,6 +3,7 @@ package com.hans.gruposs.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.emedinaa.kotlinapp.ui.adapter.TransportAdapter
@@ -116,5 +117,12 @@ class TransportListActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    fun logout(view: View) {
+        Log.d("CONSOLE", view.toString())
+        PreferencesHelper.clearSession(this)
+        val intent = Intent(this, SplashActivity::class.java)
+        startActivity(intent)
     }
 }
